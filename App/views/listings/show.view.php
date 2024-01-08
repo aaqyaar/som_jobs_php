@@ -19,12 +19,6 @@
       if ($user === "admin" || Authorization::isOwner($listing->user_id)) : ?>
         <div class="flex space-x-4 ml-4">
           <a href="/dashboard/listings/edit/<?= $listing->id ?>" class="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded">Edit</a>
-          <!-- Delete Form -->
-          <form method="POST">
-            <input type="hidden" name="_method" value="DELETE">
-            <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>
-          </form>
-          <!-- End Delete Form -->
         </div>
       <?php endif; ?>
     </div>
@@ -61,14 +55,38 @@
     <h3 class="text-lg font-semibold mt-4 mb-2 text-slate-900">Benefits</h3>
     <p><?= $listing->benefits ?></p>
   </div>
-  <p class="my-5">
+
+  
+  <?php use Framework\Middleware\Authorize; if ($listing->expireDate > date('Y-m-d')) : ?>
+      <p class="my-5">
     Put "Job Application" as the subject of your email and attach your
     resume.
   </p>
-  <a href="mailto:<?= $listing->email ?>" class="block text-center w-full rounded-md bg-slate-800 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+
+ <?php 
+ 
+ $authorize = new Authorize();
+ if ($authorize->isAuthenticated()) : ?>
+
+<a href="mailto:<?= $listing->email ?>" class="block text-center w-full rounded-md bg-slate-800 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
     Apply Now
   </a>
+
+  <?php else:?>
+    '<a href="/auth/login" class="block text-center w-full rounded-md bg-slate-800 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+    To Apply, Login
+  </a>
+  
+
+ <?php endif; ?>
+
+  <?php else: ?>
+    <p class="my-5 text-red-500 font-semibold">
+    This job has expired.
+
+  <?php endif; ?>
+
+
 </section>
 
-<?= loadPartial('bottom-banner') ?>
 <?= loadPartial('footer') ?>

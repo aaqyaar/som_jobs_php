@@ -6,8 +6,8 @@ namespace App\Controllers;
 use Framework\Database;
 use Framework\Session;
 use Framework\Authorization;
-use Framework\Services\ListingService;
-use Framework\Services\UserService;
+use App\Services\ListingService;
+use App\Services\UserService;
 
 
 class DashboardController
@@ -51,7 +51,7 @@ class DashboardController
    */
   public function getUsers()
   {
-    $users = $this->db->query('SELECT * FROM users ORDER BY created_at DESC LIMIT 6')->fetchAll();
+    $users = $this->db->query('SELECT * FROM users WHERE status = "active" ORDER BY created_at DESC LIMIT 6')->fetchAll();
 
     loadView('dashboard/users/index', [
       'users' => $users
@@ -65,7 +65,7 @@ class DashboardController
    */
   public function getListings()
   {
-    $listings = $this->db->query('SELECT * FROM listings ORDER BY created_at DESC LIMIT 6')->fetchAll();
+    $listings = $this->db->query('SELECT * FROM listings WHERE status = "active" ORDER BY created_at DESC LIMIT 6')->fetchAll();
 
     loadView('dashboard/listings/index', [
       'listings' => $listings
@@ -78,7 +78,7 @@ class DashboardController
    * @return void
    */
   public function getCountListings() {
-    $listings = $this->db->query('SELECT * FROM listings')->fetchAll();
+    $listings = $this->db->query('SELECT * FROM listings WHERE status = "active"')->fetchAll();
     
     return count($listings);
   }
@@ -89,7 +89,7 @@ class DashboardController
    * @return void
    */
   public function getCountUsers() {
-    $users = $this->db->query('SELECT * FROM users')->fetchAll();
+    $users = $this->db->query('SELECT * FROM users WHERE status = "active"')->fetchAll();
 
     return count($users);
   }

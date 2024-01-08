@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Services;
+namespace App\Services;
 
 use App\Controllers\ErrorController;
 use Framework\Authorization;
@@ -21,7 +21,7 @@ class ListingService {
      * @return void
      */
     public function storeListing() {
-    $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
+    $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits', 'expireDate'];
 
     $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
 
@@ -29,7 +29,7 @@ class ListingService {
 
     $newListingData = array_map('sanitize', $newListingData);
 
-    $requiredFields = ['title', 'description', 'salary', 'email', 'city', 'state'];
+    $requiredFields = ['title', 'description', 'salary', 'email', 'city', 'state', 'expireDate'];
 
     $errors = [];
 
@@ -105,7 +105,7 @@ class ListingService {
       return redirect('/listings/' . $listing->id);
     }
 
-    $this->db->query('DELETE FROM listings WHERE id = :id', $params);
+    $this->db->query('UPDATE listings SET status = "deleted" WHERE id = :id', $params);
 
     // Set flash message
     Session::setFlashMessage('success_message', 'Listing deleted successfully');
@@ -113,31 +113,7 @@ class ListingService {
     redirect('/dashboard/listings');
   }
 
-    public function editUser($params) {
-        $id = $params['id'] ?? '';
-
-        $params = [
-        'id' => $id
-        ];
-
-        $user = $this->db->query('SELECT * FROM users WHERE id = :id', $params)->fetch();
-
-        // Check if user exists
-        if (!$user) {
-        ErrorController::notFound('User not found');
-        return;
-        }
-
-        // Authorization
-        if (Session::get('user')['role'] !== "admin" && !Authorization::isOwner($user->user_id)) {
-        Session::setFlashMessage('error_message', 'You are not authoirzed to update this user');
-        return redirect('/dashboard/users/' . $user->id);
-        }
-
-        loadView('dashboard/users/edit', [
-        'user' => $user
-        ]);
-    }
+ 
 
     /**
    * Update a listing
@@ -167,7 +143,7 @@ class ListingService {
       return redirect('/listings/' . $listing->id);
     }
 
-    $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
+    $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits', 'expireDate'];
 
     $updateValues = [];
 

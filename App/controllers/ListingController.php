@@ -3,10 +3,6 @@
 namespace App\Controllers;
 
 use Framework\Database;
-use Framework\Validation;
-use Framework\Session;
-use Framework\Authorization;
-use Framework\Middleware\Authorize;
 
 class ListingController
 {
@@ -31,43 +27,6 @@ class ListingController
       'listings' => $listings
     ]);
   }
-
-   /**
-   * Delete a listing
-   * 
-   * @param array $params
-   * @return void
-   */
-  public function destroy($params)
-  {
-    $id = $params['id'];
-
-    $params = [
-      'id' => $id
-    ];
-
-    $listing = $this->db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
-
-    // Check if listing exists
-    if (!$listing) {
-      ErrorController::notFound('Listing not found');
-      return;
-    }
-
-    // Authorization
-    if (Session::get('user')['role'] !== "admin" &&  !Authorization::isOwner($listing->user_id)) {
-      Session::setFlashMessage('error_message', 'You are not authoirzed to delete this listing');
-      return redirect('/listings/' . $listing->id);
-    }
-
-    $this->db->query('DELETE FROM listings WHERE id = :id', $params);
-
-    // Set flash message
-    Session::setFlashMessage('success_message', 'Listing deleted successfully');
-
-    redirect('/dashboard/listings');
-  }
- 
 
   /**
    * Show a single listing

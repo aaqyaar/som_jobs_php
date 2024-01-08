@@ -47,5 +47,4 @@
 
 
 
-<?= loadPartial('bottom-banner') ?>
 <?= loadPartial('footer') ?>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Services;
+namespace App\Services;
 
 use App\Controllers\ErrorController;
 use Framework\Authorization;
@@ -167,7 +167,7 @@ use Framework\Validation;
 
     // Check if listing exists
     if (!$user) {
-      ErrorController::notFound('Listing not found');
+      ErrorController::notFound('User not found');
       return;
     }
 
@@ -190,7 +190,7 @@ use Framework\Validation;
       return redirect('/dashboard/users/');
     }
 
-    $this->db->query('DELETE FROM users WHERE id = :id', $params);
+    $this->db->query('UPDATE users SET status = "deleted" WHERE id = :id', $params);
 
     // Set flash message
     Session::setFlashMessage('success_message', 'User deleted successfully');

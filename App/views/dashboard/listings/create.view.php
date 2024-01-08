@@ -51,6 +51,10 @@
       <div class="mb-4">
         <input type="email" name="email" placeholder="Email Address For Applications" class="textfield" value="<?= $listing['email'] ?? '' ?>" />
       </div>
+
+       <div class="mb-4">
+        <input type="date" name="expireDate" placeholder="Expire Date" class="textfield" value="<?= $listing['expireDate'] ?? '' ?>" />
+      </div>
       <button class="btn-contained mb-3">
         Save
       </button>

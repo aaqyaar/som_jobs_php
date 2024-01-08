@@ -99,7 +99,7 @@ The `App` directory contains all of the main application files like controllers,
 - **/routes.php** - Contains all of the routes
 - **/config/db.php** - Contains the database configuration
 - **composer.json** - Contains the composer dependencies
-- **workopia.sql** - Contains the database dump
+- **somjobs.sql** - Contains the database dump
 
 ## License
 

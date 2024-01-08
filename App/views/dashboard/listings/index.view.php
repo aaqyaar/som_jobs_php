@@ -3,9 +3,9 @@
  
 <?= loadPartial('sidebar') ?>
 
-<div class="fixed ml-44 left-0 right-0 z-[100]">
+<div class="fixed ml-44 overflow-auto h-screen left-0 right-0 z-[100]">
 
-<div class="max-w-[1160px] p-3 mx-auto mt-4 overflow-x-auto">
+<div class="max-w-[1160px] p-3 mx-auto mt-4 overflow-auto">
 <div class="flex items-end justify-end gap-2">
 
 <a href="/dashboard/listings/create" class="mb-6 rounded-md bg-slate-800 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
